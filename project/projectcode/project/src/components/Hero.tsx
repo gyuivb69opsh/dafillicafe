@@ -30,11 +30,12 @@ export function Hero({
           src="/image.png"
           alt="Da Filli Cafe drinks"
           className="h-full w-full object-cover"
-          width="1920"
-          height="1080"
+          width="1200"
+          height="675"
           loading="eager"
           decoding="async"
           fetchPriority="high"
+          style={{ contentVisibility: 'auto' }}
         />
         <div className="hero-overlay absolute inset-0" />
       </div>
