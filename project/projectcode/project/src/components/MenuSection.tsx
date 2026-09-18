@@ -19,7 +19,7 @@ export function MenuSection({ category, products }: MenuSectionProps) {
       </div>
       <div
         className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 md:gap-5"
-        style={{ contentVisibility: 'auto', containIntrinsicSize: '0 320px' }}
+
       >
         {products.map((p) => (
           <ProductCard key={p.id} product={p} />
