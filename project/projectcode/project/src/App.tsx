@@ -96,7 +96,7 @@ function CafeApp() {
 
   const scrollToCategory = useCallback((slug: string) => {
     setActiveCategory(slug);
-    const el = document.getElementById(`cat-${slug}`);
+const el = document.getElementById(`cat-${slug}`);
     if (el) {
       const top = el.getBoundingClientRect().top + window.scrollY - 130;
       window.scrollTo({ top, behavior: 'smooth' });
@@ -104,42 +104,39 @@ function CafeApp() {
   }, []);
 
   useEffect(() => {
-  if (view !== 'cafe' || categories.length === 0) return;
+    if (view !== 'cafe' || categories.length === 0) return;
 
-  let ticking = false;
+    let ticking = false;
 
-  const onScroll = () => {
-    if (!ticking) {
-      window.requestAnimationFrame(() => {
-        const scrollPos = window.scrollY + 160;
+    const onScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPos = window.scrollY + 160;
 
-        for (const cat of categories) {
-          const el = document.getElementById(`cat-${cat.slug}`);
-          
-          if (el && el.offsetTop <= scrollPos) {
-            // Yeh check lagane se baar-baar images re-render nahi hongi
-            setActiveCategory((prevCategory) => {
-              if (prevCategory !== cat.slug) {
-                return cat.slug;
-              }
-              return prevCategory;
-            });
+          for (const cat of categories) {
+            const el = document.getElementById(`cat-${cat.slug}`);
+            
+            if (el && el.offsetTop <= scrollPos) {
+              setActiveCategory((prevCategory) => {
+                if (prevCategory !== cat.slug) {
+                  return cat.slug;
+                }
+                return prevCategory;
+              });
+            }
           }
-        }
-        ticking = false;
-      });
-      ticking = true;
-    }
-  };
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
 
-  window.addEventListener('scroll', onScroll, { passive: true });
-  
-  return () => {
-    window.removeEventListener('scroll', onScroll);
-  };
-}, [view, categories]);
-
-  }, [view, categories]);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [view, categories]); // ✅ Ab ye sirf ek baar hai
 
   const filteredProducts = searchQuery.trim()
     ? products.filter((p) =>
@@ -149,6 +146,7 @@ function CafeApp() {
     : products;
 
   const productsByCategory = (catId: string) =>
+
     filteredProducts.filter((p) => p.category_id === catId);
 
   if (loading) {
