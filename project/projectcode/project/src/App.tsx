@@ -102,14 +102,7 @@ function CafeApp() {
 
   const scrollToCategory = useCallback((slug: string) => {
     setActiveCategory(slug);
-    const el = document.getElementById(`cat-${slug}`);
-    if (el) {
-      const top = el.getBoundingClientRect().top + window.scrollY - 130;
-      window.scrollTo({ top, behavior: 'smooth' });
-    }
-  }, []);
-
-  useEffect(() => {
+     useEffect(() => {
     if (view !== 'cafe' || categories.length === 0) return;
 
     let ticking = false;
@@ -130,12 +123,18 @@ function CafeApp() {
           if (currentCategory !== activeCategory) {
             setActiveCategory(currentCategory);
           }
-          
           ticking = false;
         });
         ticking = true;
       }
     };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [view, categories, activeCategory]);
 
     window.addEventListener('scroll', onScroll, { passive: true });
     
