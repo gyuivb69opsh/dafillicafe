@@ -102,7 +102,7 @@ function CafeApp() {
 
   const scrollToCategory = useCallback((slug: string) => {
     setActiveCategory(slug);
-     useEffect(() => {
+   useEffect(() => {
     if (view !== 'cafe' || categories.length === 0) return;
 
     let ticking = false;
@@ -136,7 +136,6 @@ function CafeApp() {
     };
   }, [view, categories, activeCategory]);
 
-    window.addEventListener('scroll', onScroll, { passive: true });
     
     return () => {
       window.removeEventListener('scroll', onScroll);
