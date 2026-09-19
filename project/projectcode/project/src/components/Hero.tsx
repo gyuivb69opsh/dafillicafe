@@ -35,7 +35,6 @@ export function Hero({
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          style={{ contentVisibility: 'auto' }}
         />
         <div className="hero-overlay absolute inset-0" />
       </div>
@@ -98,6 +97,10 @@ export function Hero({
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-stone-50 to-transparent" />
+    </section>
+  );
+}
+
     </section>
   );
 }
