@@ -94,7 +94,7 @@ function CafeApp() {
     window.scrollTo(0, 0);
   };
 
-  const scrollToCategory = useCallback((slug: string) => {
+   const scrollToCategory = useCallback((slug: string) => {
     setActiveCategory(slug);
     const el = document.getElementById(`cat-${slug}`);
     if (el) {
@@ -102,6 +102,7 @@ function CafeApp() {
       window.scrollTo({ top, behavior: 'smooth' });
     }
   }, []);
+
   useEffect(() => {
     if (view !== 'cafe' || categories.length === 0) return;
 
@@ -112,19 +113,21 @@ function CafeApp() {
         window.requestAnimationFrame(() => {
           const scrollPos = window.scrollY + 160;
 
+          let currentCategory = activeCategory;
+
           for (const cat of categories) {
             const el = document.getElementById(`cat-${cat.slug}`);
-            
             if (el && el.offsetTop <= scrollPos) {
-              // Yeh check lagane se baar-baar state update nahi hogi aur banner blink hona band ho jayega
-              setActiveCategory((prevCategory) => {
-                if (prevCategory !== cat.slug) {
-                  return cat.slug;
-                }
-                return prevCategory;
-              });
+              currentCategory = cat.slug;
             }
           }
+
+          // Sirf tab state update hogi jab user waqai naye section par jaye ga
+          // Is se website ka lag aur blinking 100% khatam ho jaye gi
+          if (currentCategory !== activeCategory) {
+            setActiveCategory(currentCategory);
+          }
+          
           ticking = false;
         });
         ticking = true;
@@ -136,9 +139,7 @@ function CafeApp() {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [view, categories]);
-
-  }, [view, categories]);
+  }, [view, categories, activeCategory]); // ✅ Saare extra brackets khatam aur activeCategory lock hai
 
   const filteredProducts = searchQuery.trim()
     ? products.filter((p) =>
@@ -157,6 +158,7 @@ function CafeApp() {
       </div>
     );
   }
+
 
   // Track order view
   if (view === 'track') {
