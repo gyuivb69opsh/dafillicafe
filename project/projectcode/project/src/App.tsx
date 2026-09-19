@@ -102,20 +102,42 @@ function CafeApp() {
       window.scrollTo({ top, behavior: 'smooth' });
     }
   }, []);
-
   useEffect(() => {
     if (view !== 'cafe' || categories.length === 0) return;
+
+    let ticking = false;
+
     const onScroll = () => {
-      const scrollPos = window.scrollY + 160;
-      for (const cat of categories) {
-        const el = document.getElementById(`cat-${cat.slug}`);
-        if (el && el.offsetTop <= scrollPos) {
-          setActiveCategory(cat.slug);
-        }
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const scrollPos = window.scrollY + 160;
+
+          for (const cat of categories) {
+            const el = document.getElementById(`cat-${cat.slug}`);
+            
+            if (el && el.offsetTop <= scrollPos) {
+              // Yeh check lagane se baar-baar state update nahi hogi aur banner blink hona band ho jayega
+              setActiveCategory((prevCategory) => {
+                if (prevCategory !== cat.slug) {
+                  return cat.slug;
+                }
+                return prevCategory;
+              });
+            }
+          }
+          ticking = false;
+        });
+        ticking = true;
       }
     };
+
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+    };
+  }, [view, categories]);
+
   }, [view, categories]);
 
   const filteredProducts = searchQuery.trim()
