@@ -42,13 +42,18 @@ function CafeApp() {
 
   const loadData = useCallback(async () => {
     try {
-      const { categories: visibleCats, products: visibleProds, allCategories: allCats } = await fetchMenuData();
-      setCategories(visibleCats);
-      setAllCategories(allCats);
-      setProducts(visibleProds);
-      setAllProducts(await fetchProducts(false));
+      // Dono backend requests ko ek sath call karein taake database loop na bane
+      const [menuData, allProds] = await Promise.all([
+        fetchMenuData(),
+        fetchProducts(false)
+      ]);
+
+      setCategories(menuData.categories);
+      setAllCategories(menuData.allCategories);
+      setProducts(menuData.products);
+      setAllProducts(allProds);
     } catch (err) {
-      console.error('Failed to load menu data:', err);
+      console.error('Failed to load menu data from backend:', err);
     } finally {
       setLoading(false);
     }
@@ -57,6 +62,7 @@ function CafeApp() {
   useEffect(() => {
     loadData();
   }, [loadData]);
+
 
   useEffect(() => {
     if (categories.length > 0 && !activeCategory) {
