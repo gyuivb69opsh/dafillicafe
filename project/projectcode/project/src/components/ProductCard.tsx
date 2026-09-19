@@ -14,9 +14,10 @@ export const ProductCard = memo(function ProductCard({ product }: ProductCardPro
 
   return (
     <div className="group bg-white rounded-xl md:rounded-2xl overflow-hidden border border-stone-200/70 hover:border-sage-300 hover:shadow-xl shadow-sm transition-all duration-300 flex flex-col">
-      {/* Image */}
-      <div className="relative h-28 sm:h-44 md:h-48 overflow-hidden bg-stone-100" style={{ contentVisibility: 'auto', containIntrinsicSize: '0 192px' }}>
+      {/* Image Container - Content Visibility ko remove kar diya hai taake blink na ho */}
+      <div className="relative h-28 sm:h-44 md:h-48 overflow-hidden bg-stone-100">
         <img
+          key={product.id} // ✅ Unique key add ki taake React image state ko yaad rakhe
           src={product.image_url}
           alt={product.name}
           loading="lazy"
