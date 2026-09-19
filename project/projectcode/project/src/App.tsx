@@ -94,7 +94,7 @@ function CafeApp() {
     window.scrollTo(0, 0);
   };
 
-   const scrollToCategory = useCallback((slug: string) => {
+  const scrollToCategory = useCallback((slug: string) => {
     setActiveCategory(slug);
     const el = document.getElementById(`cat-${slug}`);
     if (el) {
@@ -112,7 +112,6 @@ function CafeApp() {
       if (!ticking) {
         window.requestAnimationFrame(() => {
           const scrollPos = window.scrollY + 160;
-
           let currentCategory = activeCategory;
 
           for (const cat of categories) {
@@ -122,8 +121,6 @@ function CafeApp() {
             }
           }
 
-          // Sirf tab state update hogi jab user waqai naye section par jaye ga
-          // Is se website ka lag aur blinking 100% khatam ho jaye gi
           if (currentCategory !== activeCategory) {
             setActiveCategory(currentCategory);
           }
@@ -139,7 +136,7 @@ function CafeApp() {
     return () => {
       window.removeEventListener('scroll', onScroll);
     };
-  }, [view, categories, activeCategory]); // ✅ Saare extra brackets khatam aur activeCategory lock hai
+  }, [view, categories, activeCategory]);
 
   const filteredProducts = searchQuery.trim()
     ? products.filter((p) =>
@@ -159,8 +156,6 @@ function CafeApp() {
     );
   }
 
-
-  // Track order view
   if (view === 'track') {
     return (
       <>
@@ -182,7 +177,6 @@ function CafeApp() {
     );
   }
 
-  // Admin view
   if (view === 'admin') {
     if (!adminUnlocked) {
       return (
@@ -212,7 +206,6 @@ function CafeApp() {
     );
   }
 
-  // Cafe view
   return (
     <>
       <Header
@@ -225,7 +218,6 @@ function CafeApp() {
         onTrackActiveOrder={navigateToTrack}
       />
 
-      {/* Closed banner */}
       {!isOpen && (
         <div className="fixed top-16 md:top-20 left-0 right-0 z-40 bg-red-600 text-white py-2.5 px-4 text-center shadow-lg">
           <div className="flex items-center justify-center gap-2 text-sm font-semibold">
@@ -277,7 +269,6 @@ function CafeApp() {
         )}
       </main>
 
-      {/* Footer */}
       <footer className="bg-stone-900 text-stone-300 mt-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -303,65 +294,5 @@ function CafeApp() {
             </div>
           </div>
 
-          {/* Social media links */}
           {(instagramUrl || tiktokUrl || facebookUrl) && (
-            <div className="mt-6 flex items-center gap-4">
-              <span className="text-xs text-stone-500 font-semibold uppercase tracking-wide">Follow us</span>
-              {instagramUrl && (
-                <a
-                  href={instagramUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-stone-800 hover:bg-sage-700 flex items-center justify-center transition-colors"
-                  aria-label="Instagram"
-                >
-                  <Instagram className="w-4 h-4 text-stone-300" />
-                </a>
-              )}
-              {tiktokUrl && (
-                <a
-                  href={tiktokUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-stone-800 hover:bg-sage-700 flex items-center justify-center transition-colors text-xs font-bold text-stone-300"
-                  aria-label="TikTok"
-                >
-                  TT
-                </a>
-              )}
-              {facebookUrl && (
-                <a
-                  href={facebookUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-full bg-stone-800 hover:bg-sage-700 flex items-center justify-center transition-colors"
-                  aria-label="Facebook"
-                >
-                  <Facebook className="w-4 h-4 text-stone-300" />
-                </a>
-              )}
-            </div>
-          )}
 
-          <div className="mt-8 pt-6 border-t border-stone-800 text-center text-xs text-stone-500">
-            © 2026 Da Filli Cafe. All rights reserved.
-          </div>
-        </div>
-      </footer>
-
-      <CartDrawer
-        open={cartOpen}
-        onClose={() => setCartOpen(false)}
-        onOrderPlaced={navigateToTrack}
-      />
-    </>
-  );
-}
-
-export default function App() {
-  return (
-    <CartProvider>
-      <CafeApp />
-    </CartProvider>
-  );
-}
